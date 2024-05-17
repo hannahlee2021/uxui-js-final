@@ -1,0 +1,19 @@
+{
+  "name": "scent-as-narrative",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "perfume.js",
+  "scripts": {
+    "start": "node image.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.10.0",
+    "canvas2image": "^1.0.5",
+    "dotenv": "^16.4.5",
+    "html2canvas": "^1.4.1",
+    "openai": "^4.40.2"
+  }
+}

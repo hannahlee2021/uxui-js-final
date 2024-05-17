@@ -1,0 +1,151 @@
+body {
+   
+}
+h1 {
+    font-family: "Jacques Francois", serif;
+    font-size: 100px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: #F81111;
+    
+}
+
+@media (max-width:768px) {
+    h1 {
+        font-size:70px;
+    }
+}
+
+@media (max-width:390px) {
+    h1 {
+        font-size:30px;
+    }
+}
+h2 {
+    font-family: "Jacques Francois", serif;
+    font-size: 20px; 
+}
+
+@media (max-width:390px) {
+    h2 {
+        font-size:12px;
+    }
+}
+
+h3 {
+    color: #F5F5F5;
+    font-family: "Kode Mono", monospace;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+@media (max-width:768px) {
+    h3 {
+        font-size:20px;
+    }
+}
+
+@media (max-width:390px) {
+    h3 {
+        font-size:12px;
+    }
+}
+
+
+
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    color:red;
+}
+a:active {
+    color:red;
+}
+
+.header {
+    
+    display: flex;
+   /* overflow: auto; */
+    justify-content: space-between;
+    /* top:0; */
+    /* align-self:flex-start; */
+    padding-left: 100px;
+    padding-right: 100px;
+    position: relative;
+    top: 0px;
+  }
+  
+  @media (max-width:390px) {
+      .header {
+          display: flex;
+          justify-content: center;
+          padding-left:20px;
+      }
+   }
+  
+  .cont {
+      display: flex;
+      gap: 50px; 
+  }
+  
+  @media (max-width:390px) {
+      .cont {
+          display: flex;
+      gap: 20px; 
+      position: relative;
+      left: 100px;
+      }
+  }
+  svg {
+    height:100%; 
+    width:100% ;
+    color:white;
+   }
+
+  
+  .header-bar {
+    
+    position: relative;
+    margin-left: 20px;
+    top: 60px;
+}
+
+#video-bg {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index:-1;
+  }
+
+  .title {
+    display: flex;
+    justify-content:flex-start;
+    padding-left:20px;
+    margin-top:200px;
+
+  }
+
+
+  .sub-title {
+    display: flex;
+    justify-content:flex-end;
+    padding-right:40px;
+   
+  }
+  @media (max-width:390px) {
+    .sub-title {
+        margin-top:0px;
+    }
+  }
+  
+  
+  
