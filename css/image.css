@@ -1,0 +1,166 @@
+body {
+    background-color: #fff;
+}
+h1 {
+    font-family: "Jacques Francois", serif;
+    font-size: 40px;
+}
+
+@media (max-width:390px) {
+    h1 {
+        font-size:20px;
+    }
+}
+h2 {
+    font-family: "Jacques Francois", serif;
+    font-size: 20px;
+}
+
+
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    color:red;
+}
+a:active {
+    color:red;
+}
+
+p {
+    font-family: "Kode Mono", monospace;
+    text-decoration:none;
+    font-size: 15px;
+    text-align: center;
+}
+
+@media (max-width:390px) {
+    p {
+        font-size:7px;
+    }
+}
+svg {
+     height:100%; 
+     width:100% ;
+    }
+
+button {
+    border:none;
+    background:none;
+}
+
+    /* .sticky {
+        position:sticky;
+       
+    } */
+
+.header {
+    
+  display: flex;
+ /* overflow: auto; */
+  justify-content: space-between;
+  /* top:0; */
+  /* align-self:flex-start; */
+  padding-left: 100px;
+  padding-right: 100px;
+  position: relative;
+  top: -40px;
+}
+
+@media (max-width:390px) {
+    .header {
+        display: flex;
+        justify-content: center;
+        padding-left:20px;
+    }
+ }
+
+.cont {
+    display: flex;
+    gap: 50px; 
+}
+
+@media (max-width:390px) {
+    .cont {
+        display: flex;
+    gap: 20px; 
+    position: relative;
+    left: 100px;
+    }
+}
+
+.save-sticky {
+    position: sticky;
+    margin-left: 20px;
+    top: 60px;
+}
+
+#save {
+    
+   
+    position: sticky;
+    margin-left: 700px;
+    top: 30px;
+}
+
+@media (max-width:390px) {
+    #save {
+        margin-left:130px;
+    }
+}
+
+#save-icon {
+    width:30px;
+    top: 20px;
+}
+
+@media (max-width:390px) {
+    #save-icon {
+        width:20px;
+        top: 10px;
+    }
+}
+
+#save-icon:hover {
+    color:red;
+}
+
+.image-drop {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin-top:-465px;
+    z-index:0;
+    
+}
+
+#image-title {
+    text-align: center;
+}
+#image-bg {
+    width:100%;
+}
+
+#drop-area {
+    display: block;
+    width: 579px;
+    height: 450px;
+    padding:30px;
+    background: #fff;
+    text-align:center;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+#image-view {
+    width: 579px;
+    height: 450px;
+    border-radius: 50%;
+    background-position: center;
+    background-size:cover;
+}
+
+
