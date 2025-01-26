@@ -138,9 +138,7 @@ dropArea.addEventListener("drop", function(e){
 
 
 
-// const apiKey = "AIzaSyBlBBfDgGg-isn5YvkpEbDpSdhWqjG_9b4";
-// const apiKey = process.env.GOOGLE_API_KEY;
-// const genAI = new GoogleGenerativeAI(apiKey);
+
 
 //defining what happens in function using file content as parameter
 async function fileToGenerativePart(file) {
