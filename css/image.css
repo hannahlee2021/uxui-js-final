@@ -163,4 +163,50 @@ button {
     background-size:cover;
 }
 
+.result-cont{
+    
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-top: 100px;
+    padding-bottom: 200px;
+}
 
+.result-text-cont {
+   
+    position: relative;
+    display: flex;
+    padding-left: auto;
+    flex-direction: column;
+    z-index: 10;
+    bottom:550px;
+    gap: 20px;
+    
+}
+
+.result-text, .result-text-2 {
+    
+    font-family: "Kode Mono", monospace;
+    text-decoration:none;
+    font-size: 12px;
+    text-align: center;
+}
+
+#uploaded-img {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    top: 150px
+}
+
+#uploaded-img img {
+    border: 2px #ADA459 solid;
+    border-radius: 50%;
+    width:300px;
+    height:300px;
+}
+
+.results-page {
+    
+    background-color: #fff;
+}

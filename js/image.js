@@ -13,8 +13,9 @@ import {GoogleGenerativeAI} from "@google/generative-ai";
 document.getElementById('save').addEventListener('click', function() {
 
   //using the html2canvas library to capture image of the contents within the result class
-    html2canvas(document.querySelectorAll('.results'), {
-
+    html2canvas(document.querySelectorAll('.results-page'), {
+      useCORS: true,
+      allowTaint: true,
       //turns the elements of results class into a canvas drawing and determines what happens when results class is turned into canvas
         onrendered: function(canvas) {
           
@@ -75,69 +76,6 @@ dropArea.addEventListener("drop", function(e){
 
 
 
-// const generationConfig = {
-//     temperature: 1,
-//     topK: 0,
-//     topP: 0.95,
-//     maxOutputTokens: 8192,
-//   };
-
-
-// const genAI = new GoogleGenerativeAI('AIzaSyCUX4Ei_mUpECJyBW3OlX_67_RRauzueU8');
-// //const model = genAI.getGenerativeModel({model: "gemini-1.0-pro-vision-latest", generationConfig})
-
-// // function fileToGenerativePath(path,mimeType) {
-// //     return {
-// //         inlineData: {
-// //             data: Buffer.from(fs.readFileSync(path)).toString("base64"),
-// //             mimeType,
-// //         },
-// //     };
-// // }
-// function fileToGenerativePath(file, mimeType) {
-//     return new Promise((resolve, reject) => {
-//         const reader = new FileReader();
-//         reader.onload = function(event) {
-//             const data = event.target.result.split(',')[1]; // Extract base64 data from the Data URL
-//             resolve({
-//                 inlineData: {
-//                     data: data,
-//                     mimeType,
-//                 },
-//             });
-//         };
-//         reader.onerror = function(error) {
-//             reject(error);
-//         };
-//         reader.readAsDataURL(file);
-//     });
-// }
-
-// async function run() {
-//     const model = genAI.getGenerativeModel({model: "gemini-pro-vision"});
-//     const prompt = "";
-
-//     inputFile.addEventListener("change", async function() {
-//         const file = inputFile.files[0];
-//         const imageParts = await fileToGenerativePath(file, "image/jpg");
-//         console.log(imageParts)
-//         const result = await model.generateContent([prompt, imageParts]);
-        
-//         const response = await result.response;
-//         const text = response.text();
-//         console.log(text);
-//         // Now you can use the imageParts for further processing
-//     });
-//     //const imageParts = [fileToGenerativePath("348s.jpg", "image/png")];
-
-   
-// }
-
-// run();
-
-
-
-
 
 
 //defining what happens in function using file content as parameter
@@ -167,6 +105,7 @@ async function run() {
     const prompt = "Based on the image, recommend an existing perfume related to the image in one sentence.";
     const prompt2 = "Based on the image, write a one sentence story related to the image.";
     const fileInputEl = document.querySelector("input[type=file]");
+    
     
     try {
         if (!fileInputEl.files || !fileInputEl.files[0]) {
@@ -241,6 +180,14 @@ async function run() {
             resultDiv.textContent = `Error: ${error.message}`;
         }
     }
+
+    // Display the uploaded image
+    const uploadedImg = document.getElementById("uploaded-img");
+    if (uploadedImg && fileInputEl.files[0]) {
+        const imageUrl = URL.createObjectURL(fileInputEl.files[0]);
+        uploadedImg.innerHTML = `<img src="${imageUrl}" alt="Uploaded image" style="max-width: 300px;">`;
+    }
+
 }
 
 // Clear console to make our logs more visible
@@ -253,42 +200,3 @@ document.querySelector("input[type=file]").addEventListener("change", () => {
 });
 
   
-// const genAI = new GoogleGenerativeAI(apiKey);
-// const generationConfig = {
-//         temperature: 1,
-//         topK: 0,
-//         topP: 0.95,
-//         maxOutputTokens: 8192,
-//       };
-
-// const model = genAI.getGenerativeModel({ model: "gemini-pro-vision", generationConfig });
-
-// async function generateContent() {
-//     try {
-//         // const prompt = "analyze this image";
-//         // const result = await model.generateContent(prompt);
-//         // const response = await result.response;
-//         // console.log(response)
-//         const imagePath = "348s.jpg";
-//         const imageData = await fs.readFile(imagePath);
-//         const imageBase64 = imageData.toString("base64");
-
-//         const parts = [
-//             { text: "describe what is happening in the image"},
-//             {
-//                 inlineData: {
-//                     mimeType:"image/jpg",
-//                     data:imageBase64
-//                 }
-//             },
-//         ]
-
-//         const result = await model.generateContent({contents: [{role:"user", parts}]})
-//         const response = await result.response;
-//         console.log(response)
-//         document.querySelectorAll("body").innerHTML = response;
-//     } catch(error) {
-//         console.error("error", error);
-//     }
-// }
-// generateContent();
