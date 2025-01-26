@@ -1,4 +1,3 @@
-
 // // type=module
 
 // ****tried to use the gemini api image analysis but ended up not figuring it out all the way in time *******
@@ -36,8 +35,13 @@ inputFile.addEventListener("change", uploadImage);
 
 //laying out what happens in uploadImage function
 function uploadImage() {
+    // Add validation to check if a file was selected
+    if (!inputFile.files || !inputFile.files[0]) {
+        console.error('No file selected');
+        return;
+    }
     
-  //initializes local variable that creates temporary url for selected file and retrieves first selected file from input element
+    //initializes local variable that creates temporary url for selected file and retrieves first selected file from input element
     let imgLink = URL.createObjectURL(inputFile.files[0]);
 
     //sets background of imageView variable with the content of imgLink url previously generated
@@ -134,61 +138,121 @@ dropArea.addEventListener("drop", function(e){
 
 
 
-const apiKey = "AIzaSyCUX4Ei_mUpECJyBW3OlX_67_RRauzueU8";
-const genAI = new GoogleGenerativeAI(apiKey);
+// const apiKey = "AIzaSyBlBBfDgGg-isn5YvkpEbDpSdhWqjG_9b4";
+// const apiKey = process.env.GOOGLE_API_KEY;
+// const genAI = new GoogleGenerativeAI(apiKey);
 
 //defining what happens in function using file content as parameter
 async function fileToGenerativePart(file) {
+    console.log("Received file:", file); // Debug log
+    
+    if (!file || !(file instanceof Blob)) {
+        throw new Error('Please select a valid image file');
+    }
 
-  //creates promise
-    const base64EncodedDataPromise = new Promise((resolve) => {
-
-      //creates fileReader object to read contents of files
-      const reader = new FileReader();
-
-      //when reader object is fully loaded, a function is called to split the data from reader.result by the comma, and then resolve promise via the second half of split
-      reader.onloadend = () => resolve(reader.result.split(',')[1]);
-
-      //reads file content and then returns data as url
-      reader.readAsDataURL(file);
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            console.log("File successfully read"); // Debug log
+            resolve(reader.result.split(',')[1]);
+        };
+        reader.onerror = () => {
+            console.error("Error reading file"); // Debug log
+            throw new Error('Error reading file');
+        };
+        reader.readAsDataURL(file);
     });
+}
 
-    //returns object with inlineData property and data property is assigned to resolved to base64EncodedDataPromise promise and MIME type is assigned to value of file.type
-    return {
-      inlineData: { data: await base64EncodedDataPromise, mimeType: file.type },
-    };
-  }
-  
-  //function for calling api
-  async function run() {
-
-    // For text-and-images input (multimodal), use the gemini-pro-vision model
-    //determining what model to be used
-    const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
-  
-    //assign to model what kind of response to generate
-    const prompt = "Based on the image, recommend a perfume and write a one sentence story.";
-  
-    //initialize variable storing file input element from HTML
+//function for calling api
+async function run() {
+    const prompt = "Based on the image, recommend an existing perfume related to the image in one sentence.";
+    const prompt2 = "Based on the image, write a one sentence story related to the image.";
     const fileInputEl = document.querySelector("input[type=file]");
+    
+    try {
+        if (!fileInputEl.files || !fileInputEl.files[0]) {
+            throw new Error('Please select an image first');
+        }
 
-    //within promise, use map function to create array of parts by calling fileToGenerativePart function on each file in input and waiting for completion of all file conversions
-    const imageParts = await Promise.all(
-      [...fileInputEl.files].map(fileToGenerativePart)
-    );
-  
-    //stores the calling of generateContent method on model object and expects prompt and imageParts input
-    const result = await model.generateContent([prompt, ...imageParts]);
+        console.log("Selected file:", fileInputEl.files[0]);
+        const imagePart = await fileToGenerativePart(fileInputEl.files[0]);
+        
+        console.log("Attempting to connect to server...");
+        
+        // Test if server is reachable
+        try {
+            const testResponse = await fetch('http://localhost:3000/analyze-image', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    prompt: prompt,
+                    imageData: imagePart,
+                })
+            });
+            const testResponse2 = await fetch('http://localhost:3000/analyze-image', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                  prompt: prompt2,
+                  imageData: imagePart
+              })
+          });
+            
+            console.log("Server response status:", testResponse.status);
+            console.log("Server response status:", testResponse2.status);
+            const responseData = await testResponse.json();
+            const responseData2 = await testResponse2.json();
+            console.log("Server response data:", responseData);
+            console.log("Server response data:", responseData2);
 
-    //stores the response property of result of result object
-    const response = await result.response;
+            document.querySelector('.result-text').innerHTML = responseData;
+            const result_2 = document.querySelector('.result-text-2') ;
+            result_2.innerHTML = responseData2;
+            result_2.style.color = "red";
+            // document.querySelector('.result-text-2').innerHTML = responseData2;
+            
+            
+            
+            const resultDiv = document.querySelector('.result-text');
+            const resultDiv2 = document.querySelector('.result-text-2');
 
-    //stores the text content of response object
-    const text = response.text();
-    console.log(text);
-  }
-  
-  run();
+            if (resultDiv) {
+                resultDiv.textContent = responseData.text || 'No response text received';
+            }
+            if (resultDiv2) {
+              resultDiv2.textContent = responseData2.text || 'No response text received';
+          }
+            
+        } catch (fetchError) {
+            console.error("Network error details:", {
+                message: fetchError.message,
+                stack: fetchError.stack
+            });
+            throw new Error(`Failed to connect to server: ${fetchError.message}`);
+        }
+
+    } catch (error) {
+        console.error("Main error:", error);
+        const resultDiv = document.querySelector('.results');
+        if (resultDiv) {
+            resultDiv.textContent = `Error: ${error.message}`;
+        }
+    }
+}
+
+// Clear console to make our logs more visible
+console.clear();
+
+// Add event listener for file selection
+document.querySelector("input[type=file]").addEventListener("change", () => {
+    console.log("File selected - running analysis...");
+    run();
+});
 
   
 // const genAI = new GoogleGenerativeAI(apiKey);
